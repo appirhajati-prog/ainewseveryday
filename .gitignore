@@ -1,5 +1,12 @@
-.env
 __pycache__/
-logs/
 *.pyc
-all_project_codes.txt
+*.pyo
+*.pyd
+.env
+logs/
+.venv/
+venv/
+ENV/
+.idea/
+.vscode/
+*.zip

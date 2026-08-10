@@ -2,8 +2,9 @@ import argparse
 import logging
 import time
 import schedule
+import pytz
 from config import Settings, BASE_DIR
-from collectors import github, hackernews, huggingface, reddit, producthunt
+from collectors import github, hackernews, huggingface, reddit, producthunt, arxiv
 from services.deduplicate import remove_duplicates
 from services.formatter import format_digest
 from services.logger import configure_logging
@@ -15,10 +16,10 @@ from utils.helpers import utc_now
 def run_digest(settings: Settings, logger: logging.Logger) -> None:
     logger.info("Starting daily AI tools and news collection...")
     
-    # آرکسیو (مقالات علمی) حذف شد تا فقط ابزار و اخبار ترند بمانند
     collectors = [
         github.collect, 
         huggingface.collect, 
+        arxiv.collect,
         hackernews.collect, 
         reddit.collect, 
         producthunt.collect
@@ -54,8 +55,11 @@ def main():
         run_digest(settings, logger)
         return
         
-    logger.info("Bot started in DAEMON mode. Scheduled to run daily at 12:00.")
-    schedule.every().day.at("12:00").do(run_digest, settings=settings, logger=logger)
+    # ساعت ۱۲:۰۰ به وقت تهران
+    iran_tz = pytz.timezone("Asia/Tehran")
+    schedule.every().day.at("12:00").do(run_digest, settings=settings, logger=logger).tag("iran-digest")
+    logger.info(f"Current server time: {utc_now()}")
+    logger.info(f"Current Iran time: {utc_now().astimezone(iran_tz).strftime('%Y-%m-%d %H:%M:%S')}")
     
     while True:
         schedule.run_pending()

@@ -12,7 +12,8 @@ class DigestItem:
     published_at: Optional[datetime] = None
     metadata: dict = field(default_factory=dict)
     score: float = 0.0
-    is_top_trend: bool = False  # مشخص کننده ترندترین خبر آن سایت
+    is_top_trend: bool = False  # مشخص‌کننده ترندترین خبر آن منبع
+    is_new: bool = False        # مشخص‌کننده پروژه/مقاله جدید (کمتر از ۷ روز)
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
