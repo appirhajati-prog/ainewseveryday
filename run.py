@@ -7,7 +7,7 @@ from collectors import github, hackernews, huggingface, reddit, producthunt, arx
 from services.deduplicate import remove_duplicates
 from services.formatter import format_digest
 from services.logger import configure_logging
-from services.ranking import rank
+from services.ranking import rank, attach_trend_reasons
 from services.telegram import send_messages
 from services.translator import translate_items
 from utils.helpers import utc_now
@@ -38,9 +38,10 @@ def run():
         logger.warning("No items collected today.")
         return
 
-    processed = translate_items(
-        rank(remove_duplicates(collected)), logger
-    )[: settings.max_digest_items]
+    # انتخاب فقط برترین‌ها، سپس تولید دلیل ترند و ترجمه (فقط منتخب‌ها ترجمه می‌شوند — سریع‌تر)
+    top_items = rank(remove_duplicates(collected))[: settings.max_digest_items]
+    attach_trend_reasons(top_items)
+    processed = translate_items(top_items, logger)
 
     if processed:
         messages = format_digest(processed, utc_now())
