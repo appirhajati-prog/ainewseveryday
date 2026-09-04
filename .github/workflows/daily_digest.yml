@@ -2,9 +2,9 @@ name: Daily AI News Digest
 
 on:
   schedule:
-    # ساعت ۱۲:۰۰ به وقت ایران (UTC 08:30)
-    - cron: '30 8 * * *'
-  workflow_dispatch: # امکان اجرای دستی از تب Actions گیت‌هاب
+    # Set to 08:00 UTC (11:30 Iran Time) to guarantee execution before 12:00 PM Iran Time
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Manual trigger from Actions tab
 
 jobs:
   run-digest:
@@ -26,9 +26,9 @@ jobs:
 
       - name: Run Daily Digest
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
+          TELEGRAM_TOKEN: "8860626945:AAGIF2wckEkbX47eJeCSBbghttV0tY5pcKQ"
+          CHAT_ID: "1454497606"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAX_DIGEST_ITEMS: 15
-          REQUEST_TIMEOUT: 15
+          MAX_DIGEST_ITEMS: "5"
+          REQUEST_TIMEOUT: "15"
         run: python run.py
