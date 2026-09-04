@@ -9,7 +9,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 class Settings:
     telegram_bot_token: str
     telegram_chat_id: str
-    max_digest_items: int = 15
+    max_digest_items: int = 5
     request_timeout_seconds: int = 15
     github_token: str = ""
 
@@ -22,7 +22,7 @@ class Settings:
         return cls(
             telegram_bot_token=token,
             telegram_chat_id=chat_id,
-            max_digest_items=int(os.getenv("MAX_DIGEST_ITEMS", 15)),
+            max_digest_items=int(os.getenv("MAX_DIGEST_ITEMS", 5)),
             request_timeout_seconds=int(os.getenv("REQUEST_TIMEOUT", 15)),
             github_token=os.getenv("GITHUB_TOKEN", ""),
         )
