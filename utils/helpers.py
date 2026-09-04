@@ -14,6 +14,7 @@ class DigestItem:
     score: float = 0.0
     is_top_trend: bool = False  # مشخص‌کننده ترندترین خبر آن منبع
     is_new: bool = False        # مشخص‌کننده پروژه/مقاله جدید (کمتر از ۷ روز)
+    trend_reason: str = ""      # دلیل ترند شدن — بر اساس داده واقعی منبع تولید می‌شود
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
